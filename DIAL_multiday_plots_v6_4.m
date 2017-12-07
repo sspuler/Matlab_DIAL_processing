@@ -1,6 +1,7 @@
 clear all; close all;
 tic
-DIAL2=0;
+
+DIAL=1;
 date = '01 Jul 2014'; % FRAPPE (no WS)
 days = 50; skip = 5; % days to plot and days to skip ticks for plots
 %date = '27 May 2015'; %PECAN (no WS)
@@ -8,14 +9,15 @@ days = 50; skip = 5; % days to plot and days to skip ticks for plots
 %date = '24 Apr 2017'; % Perdigao 
 %days = 55; skip = 5;
 
-DIAL2=1;
+DIAL=2;
 date = '28 Jul 2017'; % DLB-HSRL and WV-DIAL @ LAFE 
 days = 40; skip = 4;
 date = '14 Aug 2017'; % DLB-HSRL and WV-DIAL @ LAFE 
 days = 3; skip = 1;
-
 date = '12 Oct 2017'; % DLB-HSRL and WV-DIAL @ LAFE 
 days = 21; skip = 3;
+date = '27 Nov 2017'; % DLB-HSRL and WV-DIAL post LAFE finalizing rack mounting
+days = 12; skip = 2;
 
 font_size = 14; % use this for 2015a version
 %font_size = 16; % use this for 2015a version
@@ -46,8 +48,8 @@ else
   RB_scale = 1;
 end
   
-C = importdata('/Users/spuler/Desktop/WV_DIAL/Matlab/NCAR_C_Map.mat');
-C2 = importdata('/Users/spuler/Desktop/WV_DIAL/Matlab/NCAR_C2_Map.mat');
+C = importdata('NCAR_C_Map.mat');
+%C2 = importdata('NCAR_C2_Map.mat');
 %cd('/Users/spuler/Desktop/FRAPPE_PECAN') % point to the directory where data is stored 
 %cd('/Users/spuler/Desktop/WV_DIAL_data/') % point to the directory where data is stored 
 %cd('/Volumes/documents/WV_DIAL_data/') % point to the directory where data is stored 
@@ -56,7 +58,7 @@ cd('/Volumes/documents/WV_DIAL_data/processed_data') % point to the directory wh
 %bin duration in ns
 bin_duration = 500;  % ns (this change from 50 to 500 on 14-June-2014)
 
-if DIAL2==1
+if DIAL==2
   cd('/Volumes/documents/WV_DIAL_data/DIAL2_processed_data') % point to the directory where data is stored 
   bin_duration = 250;  % ns (this change from 500 to 250 for DIAL#2 on 2014)
   near_field = 1;  % now the HSRL channel
@@ -455,7 +457,7 @@ if replot==1
    colorbar('EastOutside');
    axis([fix(min(duration)) ceil(max(duration)) 0 6])
    caxis([-0.5 0.5]);
-   colormap(C2)
+   colormap(C)
    ylabel('Height (km, AGL)','fontweight','b','fontsize',font_size); 
    set(gca, 'XTick',  xData)
    set(gca,'TickDir','out');

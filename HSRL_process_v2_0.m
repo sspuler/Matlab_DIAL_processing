@@ -4,8 +4,8 @@ clear all; close all
 write_data_folder = uipickfiles('num',1,'out', 'char', 'prompt', ...
     'select folder to store data',  'FilterSpec', '/Volumes/documents/WV_DIAL_data/');
 %write_data_folder = '/Volumes/documents/WV_DIAL_data/processed_data';
-%node = 'NCAR';
-node = 'MSU'; %DIAL #2 HSRL data on NF channel, WV on FF channel
+%node = 'DIAL1';
+node = 'DIAL2'; %DIAL #2 HSRL data on NF channel, WV on FF channel
 catalog = '/pub/incoming/catalog/operations';
 
 flag.save_quicklook = 1;  % save quicklook to local directory
@@ -29,7 +29,7 @@ ave_time.wv = 5.0; % averaging time (in minutes) for the water vapor
 ave_time.rb = 1.0; % averaging time (in minutes) for the relative backscatter
 ave_time.gr = 1.0; % gridding time (in minutes) for the output files
 
-if strcmp(node,'NCAR')==1
+if strcmp(node,'DIAL1')==1
     files = uipickfiles('prompt', 'select data files to process',  'FilterSpec', '/scr/eldora1/wvdial_1_data/');
 else
   % flag.WS = 0; % use the surface weather station data to calcuate spectroscopy
@@ -47,8 +47,8 @@ j=1;
 for j = 1:size(files,2)
     folder = (files{j});
     date = textscan(folder(end-7:end), '%6f'); date=date{1};  % read date of file
-    if strcmp(node,'NCAR')==1
-      DIAL_settings_v2 % this loads the instrument settings which have changed over time
+    if strcmp(node,'DIAL1')==1
+      %DIAL_settings_v2 % this loads the instrument settings which have changed over time
       read_dial1_calvals % json format version of the above file
     else
       %MSU_DIAL_settings_v1 % this loads the instrument settings which have changed over time  
@@ -56,7 +56,7 @@ for j = 1:size(files,2)
     end
     folder_in=folder;
 
-    if strcmp(node,'NCAR')==1
+    if strcmp(node,'DIAL1')==1
       DIAL_Analysis_v52_function(folder, MCS, write_data_folder, flag, node, ...
       profiles2ave, P0, switch_ratio, ave_time, timing_range_correction, blank_range, p_hour)%
     else  
