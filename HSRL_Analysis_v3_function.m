@@ -118,15 +118,16 @@ end
 
 %% read in weather station data
 
+  I_on = Online_Raw_Data(:,3); % online current
+  I_off = Offline_Raw_Data(:,3); % offline current
+  Bench_T = Offline_Raw_Data(:,4); % transmitted average power
+  P_ave = Online_Raw_Data(:,4); % transmitted average power
+  
 if flag.WS==1
   % read in surface weather station data
   Surf_T = Offline_Raw_Data(:,5);  %temperature in 
   Surf_P = Offline_Raw_Data(:,6)./1013.249977;  % pressure in atm
   Surf_RH = Offline_Raw_Data(:,7);
-  I_on = Online_Raw_Data(:,3); % online current
-  I_off = Offline_Raw_Data(:,3); % offline current
-  Bench_T = Offline_Raw_Data(:,4); % transmitted average power
-  P_ave = Online_Raw_Data(:,4); % transmitted average power
   
   % convert RH to number density and absolute humidity
   % vapor pressure of water
@@ -389,16 +390,16 @@ end
   time_grid = (floor(min(time)):1/24/60*(ave_time.gr):ceil(min(time)))';
   
   lambda_all = interp1(time, lambda_all, time_grid, 'next', extrapolation);  
+  I_on = interp1(time, I_on, time_grid, method, extrapolation);      
+  I_off = interp1(time, I_off, time_grid, method, extrapolation);      
+  P_ave = interp1(time, P_ave, time_grid, method, extrapolation);  
+  Bench_T = interp1(time, Bench_T, time_grid, method, extrapolation);
   if flag.WS == 1
     Surf_T = interp1(time, Surf_T, time_grid, method, extrapolation);
     Surf_P = interp1(time, Surf_P, time_grid, method, extrapolation);
     Surf_RH = interp1(time, Surf_RH, time_grid, method, extrapolation);
     Surf_AH = interp1(time, Surf_AH, time_grid, method, extrapolation);
     Surf_N = interp1(time, Surf_N, time_grid, method, extrapolation);  
-    I_on = interp1(time, I_on, time_grid, method, extrapolation);      
-    I_off = interp1(time, I_off, time_grid, method, extrapolation);      
-    P_ave = interp1(time, P_ave, time_grid, method, extrapolation);  
-    Bench_T = interp1(time, Bench_T, time_grid, method, extrapolation);
   end
   lambda_all_off = interp1(time, lambda_all_off, time_grid, method, extrapolation);
   background_off = interp1(time,background_off, time_grid, method, extrapolation);  
@@ -506,16 +507,16 @@ if flag.mark_gaps ==1
    r_blank = bsxfun(@times, ones(length(background_on),length(range)), lambda_blank); 
  
   lambda_all_off(isnan(lambda_blank)) = NaN; 
+  Bench_T(isnan(lambda_blank)) = NaN; 
+  I_on(isnan(lambda_blank)) = NaN; 
+  I_off(isnan(lambda_blank)) = NaN;     
+  P_ave(isnan(lambda_blank)) = NaN; 
   if flag.WS ==1
     Surf_T(isnan(lambda_blank)) = NaN; 
     Surf_P(isnan(lambda_blank)) = NaN; 
     Surf_RH(isnan(lambda_blank)) = NaN; 
     Surf_AH(isnan(lambda_blank)) = NaN; 
     Surf_N(isnan(lambda_blank)) = NaN; 
-    Bench_T(isnan(lambda_blank)) = NaN; 
-    I_on(isnan(lambda_blank)) = NaN; 
-    I_off(isnan(lambda_blank)) = NaN;     
-    P_ave(isnan(lambda_blank)) = NaN;     
   end
   background_on(isnan(lambda_blank)) = NaN; 
   background_off(isnan(lambda_blank)) = NaN; 
@@ -568,16 +569,16 @@ if flag.decimate == 1
     time_new = time_new(1:decimate_time:end);
    % range= range(1:decimate_range:end);
    % beta_m_profile=beta_m_profile(1:decimate_range:end);
+    Bench_T=Bench_T(1:decimate_time:end);
+    I_on = I_on(1:decimate_time:end);    
+    I_off = I_off(1:decimate_time:end);
+    P_ave = P_ave(1:decimate_time:end);
     if flag.WS ==1
         Surf_T=Surf_T(1:decimate_time:end);
-        Bench_T=Bench_T(1:decimate_time:end);
         Surf_P=Surf_P(1:decimate_time:end);
         Surf_RH=Surf_RH(1:decimate_time:end);
         Surf_AH=Surf_AH(1:decimate_time:end);
         Surf_N=Surf_N(1:decimate_time:end);
-        I_on = I_on(1:decimate_time:end);    
-        I_off = I_off(1:decimate_time:end);
-        P_ave = P_ave(1:decimate_time:end);
     end
 end
     
@@ -873,7 +874,8 @@ end
    save(name, 'N_avg', 'RB', 'range', 'time_new', 'T', 'P', 'OD', 'background_off', 'background_on', 'profiles2ave', 'N_error',...
        'Surf_T', 'Surf_P', 'Surf_RH', 'Surf_AH', 'I_on', 'I_off', 'P_ave', 'Bench_T', 'lambda_all', 'lambda_all_off')
   else
-   save(name, 'N_avg', 'RB', 'range', 'time_new', 'T', 'P', 'OD', 'background_off', 'background_on', 'profiles2ave', 'N_error')
+   save(name, 'N_avg', 'RB', 'range', 'time_new', 'T', 'P', 'OD', 'background_off', 'background_on', 'profiles2ave', 'N_error',...
+       'I_on', 'I_off', 'P_ave', 'Bench_T', 'lambda_all', 'lambda_all_off')
   end
  end
  

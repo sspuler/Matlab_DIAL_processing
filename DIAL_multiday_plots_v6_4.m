@@ -17,7 +17,7 @@ days = 3; skip = 1;
 date = '12 Oct 2017'; % DLB-HSRL and WV-DIAL @ LAFE 
 days = 21; skip = 3;
 date = '27 Nov 2017'; % DLB-HSRL and WV-DIAL post LAFE finalizing rack mounting
-days = 12; skip = 2;
+days = 19; skip = 1;
 
 font_size = 14; % use this for 2015a version
 %font_size = 16; % use this for 2015a version
@@ -29,7 +29,7 @@ sonde = 0;
 %replot time vs range images at start of processing 0=off 1=on
 replot = 1;
 %save figures at end of processing 0=off 1=on
-save_figs = 1;
+save_figs = 0;
 %Wide field channel 0=off 1=on
 near_field = 0;  % now the HSRL channel
 % Wide field multiplier -- make it easier to compare Wide/Narrow RB profiles
@@ -98,10 +98,11 @@ for i=1:days
       surf_T = Surf_T;
       surf_P = Surf_P;
       surf_AH = Surf_AH;
-      i_off = I_off;
-      i_on = I_on;
-      p_ave = P_ave;
-      bench_T = Bench_T;
+      t_off = I_off;
+      t_on = I_on;
+      p_on = Bench_T;
+      p_off = P_ave;
+     % bench_T = Bench_T;
     end
   else
     date = datestr(addtodate(datenum(date), 1, 'day'), 'dd mmm yyyy');
@@ -140,10 +141,11 @@ for i=1:days
       surf_T = vertcat(surf_T,Surf_T(2:end,:));
       surf_P = vertcat(surf_P,Surf_P(2:end,:));
       surf_AH = vertcat(surf_AH, Surf_AH(2:end,:));
-      i_off = vertcat(i_off,I_off(2:end,:));
-      i_on = vertcat(i_on, I_on(2:end,:));
-      p_ave = vertcat(p_ave, P_ave(2:end,:));  
-      bench_T = vertcat(bench_T,Bench_T(2:end,:));
+      t_off = vertcat(t_off,I_off(2:end,:));
+      t_on = vertcat(t_on, I_on(2:end,:));
+      p_on = vertcat(p_on, Bench_T(2:end,:));  
+      p_off = vertcat(p_off, P_ave(2:end,:)); 
+  %    bench_T = vertcat(bench_T,Bench_T(2:end,:));
     end
   end
 end
@@ -335,8 +337,8 @@ if replot==1
    subplot1=subplot(2,1,1,'Parent',figure1,'YGrid','on', 'XGrid','on');
    box(subplot1,'on');
    hold(subplot1,'all');
-   plot(duration, (i_off),'b','LineWidth',2,'DisplayName','I off') % these plot diode Temps
-   plot(duration, (i_on),'r','LineWidth',2, 'DisplayName','I on')
+   plot(duration, (t_off),'b','LineWidth',2,'DisplayName','T_{off}') % these plot diode Temps
+   plot(duration, (t_on),'r','LineWidth',2, 'DisplayName','T_{on}')
    axis([fix(min(duration)) ceil(max(duration)) 10 35])
    YTick = [100 120 140 160 180];
    ylabel('seed Temp, C', 'Fontsize', font_size, 'Fontweight', 'b');  
@@ -347,7 +349,7 @@ if replot==1
    box(subplot2,'on');
    hold(subplot2,'all');
 %   plot(duration, bench_T,'r', 'LineWidth',1, 'DisplayName','T bench')
-   plot(duration, surf_T, 'b', 'LineWidth',1, 'DisplayName','T outside')
+   plot(duration, surf_T, 'b', 'LineWidth',1, 'DisplayName','Surface T')
    axis([fix(min(duration)) ceil(max(duration)) -10 40])
    YTick = [-25 0 25 50];
    ylabel('temperature, C', 'Fontsize', font_size, 'Fontweight', 'b'); 
@@ -361,10 +363,10 @@ if replot==1
    ax(2)=subplot(2,1,2);
    % plot power on right y-axis of the upper plot (% assumes 5% pickoff)
    ax(3) = axes('Position',get(ax(1),'Position'));
-   plot(duration, (p_ave/7000/5),'b--','LineWidth', 1, 'DisplayName','Eoff') % changed from 0.05 to 0.0425
+   plot(duration, (p_off/1000),'b--','LineWidth', 1, 'DisplayName','P_{off}') % changed from 0.05 to 0.0425
    hold on
-   plot(duration, bench_T/7000/5,'r--', 'LineWidth',1, 'DisplayName','Eon')
-   axis([fix(min(duration)) ceil(max(duration)) 1 10])
+   plot(duration, p_on/1000,'r--', 'LineWidth',1, 'DisplayName','P_{on}')
+   axis([fix(min(duration)) ceil(max(duration)) 0 50])
    %ax(3).YTick = [20 22.5 25 27.5 30 32.5 35 37.5 40];
    set(ax(3),'Color','none')
    set(ax(3),'YAxisLocation','right')
@@ -375,6 +377,21 @@ if replot==1
    legend('show')
    set(legend(ax(3)),'Color','white')
    %change backgroud color to transparent
+   
+   % plot Surface pressure right y-axis of the lower plot
+   ax(4) = axes('Position',get(ax(2),'Position'));
+   plot(duration, surf_P, 'b--','LineWidth', 1, 'DisplayName','Surf P') 
+   axis([fix(min(duration)) ceil(max(duration)) 0.7 1])
+   set(ax(4),'Color','none')
+   set(ax(4),'YAxisLocation','right')
+   set(ax(4),'XAxisLocation','bottom')
+   datetick('x','dd-mmm-yy','keeplimits', 'keepticks');
+   ylabel('surface pressure, atm', 'Fontsize', font_size, 'Fontweight', 'b');  
+   set(gca,'Fontsize',font_size,'Fontweight','b');
+   legend('show')
+   set(legend(ax(3)),'Color','white')
+   %change backgroud color to transparent
+      
    legend(ax(1),'Location','NorthWest') 
    legend(ax(2),'Location','NorthWest') 
    linkaxes(ax, 'x');
