@@ -16,8 +16,8 @@ date = '14 Aug 2017'; % DLB-HSRL and WV-DIAL @ LAFE
 days = 3; skip = 1;
 date = '12 Oct 2017'; % DLB-HSRL and WV-DIAL @ LAFE 
 days = 21; skip = 3;
-date = '27 Nov 2017'; % DLB-HSRL and WV-DIAL post LAFE finalizing rack mounting
-days = 19; skip = 1;
+date = '14 Dec 2017'; % DLB-HSRL and WV-DIAL post LAFE finalizing rack mounting
+days = 6; skip = 1;
 
 font_size = 14; % use this for 2015a version
 %font_size = 16; % use this for 2015a version
@@ -81,6 +81,10 @@ for i=1:days
       background_NF_off = background_off;
       lambda_NF_on = lambda_all;
       lambda_NF_off = lambda_all_off;
+      if WS==1
+        t_hsrl = I_off;
+        p_hsrl = Bench_T;
+      end
     end
     if exist(strcat(date, 'FF.mat'))==2
       load(strcat(date, 'FF.mat'))
@@ -121,6 +125,10 @@ for i=1:days
       background_NF_off = vertcat(background_NF_off, background_off(2:end));
       lambda_NF_on = vertcat(lambda_NF_on, lambda_all(2:end));
       lambda_NF_off = vertcat(lambda_NF_off, lambda_all_off(2:end));
+      if WS==1
+        t_hsrl = vertcat(t_hsrl,I_off(2:end,:));
+        p_hsrl = vertcat(p_hsrl, Bench_T(2:end,:)); 
+      end
     end
     if exist(strcat(date, 'FF.mat'))==2
       load(strcat(date, 'FF.mat'))
@@ -339,6 +347,7 @@ if replot==1
    hold(subplot1,'all');
    plot(duration, (t_off),'b','LineWidth',2,'DisplayName','T_{off}') % these plot diode Temps
    plot(duration, (t_on),'r','LineWidth',2, 'DisplayName','T_{on}')
+   plot(duration, (t_hsrl),'g','LineWidth',2, 'DisplayName','T_{hsrl}')
    axis([fix(min(duration)) ceil(max(duration)) 10 35])
    YTick = [100 120 140 160 180];
    ylabel('seed Temp, C', 'Fontsize', font_size, 'Fontweight', 'b');  
@@ -366,6 +375,7 @@ if replot==1
    plot(duration, (p_off/1000),'b--','LineWidth', 1, 'DisplayName','P_{off}') % changed from 0.05 to 0.0425
    hold on
    plot(duration, p_on/1000,'r--', 'LineWidth',1, 'DisplayName','P_{on}')
+   plot(duration, p_hsrl/2500,'g--', 'LineWidth',1, 'DisplayName','P_{hsrl}')
    axis([fix(min(duration)) ceil(max(duration)) 0 50])
    %ax(3).YTick = [20 22.5 25 27.5 30 32.5 35 37.5 40];
    set(ax(3),'Color','none')
@@ -381,7 +391,7 @@ if replot==1
    % plot Surface pressure right y-axis of the lower plot
    ax(4) = axes('Position',get(ax(2),'Position'));
    plot(duration, surf_P, 'b--','LineWidth', 1, 'DisplayName','Surf P') 
-   axis([fix(min(duration)) ceil(max(duration)) 0.7 1])
+   axis([fix(min(duration)) ceil(max(duration)) 0.75 1])
    set(ax(4),'Color','none')
    set(ax(4),'YAxisLocation','right')
    set(ax(4),'XAxisLocation','bottom')

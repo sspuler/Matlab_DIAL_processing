@@ -1050,8 +1050,13 @@ end
 
 
 
-
-
+%figure(101)
+%semilogy(mean(Offline(1:30,:),1))
+%grid on
+%hold on
+%stop = round(22.25/24*(size(Offline,1)))
+%semilogy(mean(Offline(stop:stop+30,:),1))
+%hold off
 
 
 
