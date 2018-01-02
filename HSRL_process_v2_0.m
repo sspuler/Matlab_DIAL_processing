@@ -34,7 +34,7 @@ if strcmp(node,'DIAL1')==1
 else
   % flag.WS = 0; % use the surface weather station data to calcuate spectroscopy
   % flag.mark_gaps = 0; % sets gaps in data to NaNs
-  files = uipickfiles('prompt', 'select data files to process', 'REFilter', 'NF', 'FilterSpec', '/scr/eldora1/wvdial_2_data/2017');
+  files = uipickfiles('prompt', 'select data files to process', 'REFilter', 'NF', 'FilterSpec', '/scr/eldora1/wvdial_2_data/2018');
   ave_time.wv = 5.0; % averaging time (in minutes)  
   ave_time.rb = 1; % averaging time (in minutes) 
   ave_time.gr = 1; % gridding time (in minutes) for the output files  

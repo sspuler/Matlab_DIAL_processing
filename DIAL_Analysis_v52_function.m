@@ -183,7 +183,7 @@ end
     % check for multiple wavelengths
     edges_on=828.180:.00001:828.220;
     [value,edges]=histcounts(round(lambda_all,4),edges_on); % bin rounded wavelengths
-    lambda_N = edges(value>=10);  % wavelength values with occurance > 10
+    lambda_N = edges(value>=10)  % wavelength values with occurance > 10
     %lambda_F = value(value~=0);  % frequency of occurance
     lambda_all_N = round(lambda_all,4); 
     figure(1234)
@@ -194,7 +194,7 @@ end
 
     edges_off=828.280:.00001:828.320;
     [value,edges]=histcounts(round(lambda_all_off,3),edges_off); % bin rounded wavelengths
-    lambda_off_N = edges(value>=10);  % wavelength values with occurance > 10
+    lambda_off_N = edges(value>=10)  % wavelength values with occurance > 10
     %lambda_off_F = value(value~=0);  % frequency of occurance
     lambda_all_off_N=round(lambda_all_off,2);
     figure(5678)
@@ -389,8 +389,8 @@ end
   P_ave = interp1(time, P_ave, time_grid, method, extrapolation);  
   Bench_T = interp1(time, Bench_T, time_grid, method, extrapolation);
   if flag.WS == 1
-    Surf_T = interp1(time, Surf_T, time_grid, method, extrapolation);
-    Surf_P = interp1(time, Surf_P, time_grid, method, extrapolation);
+    Surf_T = interp1(time, Surf_T, time_grid);
+    Surf_P = interp1(time, Surf_P, time_grid);
     Surf_RH = interp1(time, Surf_RH, time_grid, method, extrapolation);
     Surf_AH = interp1(time, Surf_AH, time_grid, method, extrapolation);
     Surf_N = interp1(time, Surf_N, time_grid, method, extrapolation);  
@@ -471,8 +471,8 @@ line = double(hitran(line_indices, 1:size(hitran,2)));
 
 %Calculate temperature and pressure profile
 if flag.WS == 1
-    T0 = median(Surf_T)+273.15
-    P0 = median(Surf_P)
+    T0 = nanmedian(Surf_T)+273.15
+    P0 = nanmedian(Surf_P)
 else
   T0 = 273+30; % surface temperature
 end
