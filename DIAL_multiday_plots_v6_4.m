@@ -6,18 +6,20 @@ date = '01 Jul 2014'; % FRAPPE (no WS)
 days = 50; skip = 5; % days to plot and days to skip ticks for plots
 %date = '27 May 2015'; %PECAN (no WS)
 %days =50; skip = 5; % days to plot and days to skip ticks for plots ** 'skip' must evenly divide into 'days'
-%date = '24 Apr 2017'; % Perdigao 
-%days = 55; skip = 5;
+date = '24 Apr 2017'; % Perdigao 
+days = 55; skip = 5;
+date = '24 May 2017'; % Perdigao 
+days = 10; skip = 2;
 
-DIAL=2;
-date = '28 Jul 2017'; % DLB-HSRL and WV-DIAL @ LAFE 
-days = 40; skip = 4;
-date = '14 Aug 2017'; % DLB-HSRL and WV-DIAL @ LAFE 
-days = 3; skip = 1;
-date = '12 Oct 2017'; % DLB-HSRL and WV-DIAL @ LAFE 
-days = 21; skip = 3;
-date = '15 Dec 2017'; % DLB-HSRL and WV-DIAL post LAFE finalizing rack mounting
-days = 18; skip = 2;
+%DIAL=2;
+%date = '28 Jul 2017'; % DLB-HSRL and WV-DIAL @ LAFE 
+%days = 40; skip = 4;
+%date = '14 Aug 2017'; % DLB-HSRL and WV-DIAL @ LAFE 
+%days = 3; skip = 1;
+%date = '12 Oct 2017'; % DLB-HSRL and WV-DIAL @ LAFE 
+%days = 21; skip = 3;
+%date = '03 Jan 2018'; % DLB-HSRL and WV-DIAL post LAFE finalizing rack mounting
+%days = 21; skip = 3;
 
 font_size = 14; % use this for 2015a version
 %font_size = 16; % use this for 2015a version
@@ -29,7 +31,7 @@ sonde = 0;
 %replot time vs range images at start of processing 0=off 1=on
 replot = 1;
 %save figures at end of processing 0=off 1=on
-save_figs = 0;
+save_figs = 1;
 %Wide field channel 0=off 1=on
 near_field = 0;  % now the HSRL channel
 % Wide field multiplier -- make it easier to compare Wide/Narrow RB profiles
@@ -347,7 +349,7 @@ if replot==1
    hold(subplot1,'all');
    plot(duration, (t_off),'b','LineWidth',2,'DisplayName','T_{off}') % these plot diode Temps
    plot(duration, (t_on),'r','LineWidth',2, 'DisplayName','T_{on}')
-   plot(duration, (t_hsrl),'g','LineWidth',2, 'DisplayName','T_{hsrl}')
+%   plot(duration, (t_hsrl),'g','LineWidth',2, 'DisplayName','T_{hsrl}')
    axis([fix(min(duration)) ceil(max(duration)) 10 35])
    YTick = [100 120 140 160 180];
    ylabel('seed Temp, C', 'Fontsize', font_size, 'Fontweight', 'b');  
@@ -508,6 +510,7 @@ if save_figs==1
   
   %size = [scrsz(4)/2 scrsz(4)/10 scrsz(3)/1 scrsz(4)/2]; % use for standard plots
   size = [scrsz(4)/1 scrsz(4)/1 scrsz(3)/0.35 scrsz(4)/2.05]; % use for long plots 
+  size = [scrsz(4)/1 scrsz(4)/1 scrsz(3)/0.48 scrsz(4)/2]; % use for Perdigao BAMS plots 
   %size = [scrsz(4)/1 scrsz(4)/1 scrsz(3)/2 scrsz(4)/2]; % use for day plots 
   %size = [scrsz(4)/1 scrsz(4)/1 scrsz(3)/1 scrsz(4)/2.2]; % use for AMT sized 3-day plots (with large font)
   

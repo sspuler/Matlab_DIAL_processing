@@ -57,7 +57,7 @@ function[] = DIAL_Analysis_v52_function(folder_in, MCS, write_data_folder, flag,
         % added the ability to decimate all data to half wv averaged resolution
         % added housekeeping plots and save data (laser aver power, seed current, WS data)
 %% start
-        
+     
 dd = pwd; % get the current path        
 close all; clc
 scrsz = get(0,'ScreenSize');
@@ -79,8 +79,8 @@ gate = round((MCS.bin_duration*1e-9*3e8/2)*10)/10
 
 delta_r_index =  150/gate; % this is the cumlative sum photons gate spacing 
 delta_r = delta_r_index*gate*100; % delta r in cm
-r1 = round(1500/gate); % index for smoothing range 1 (2km)
-r2 = round(2500/gate); % index for smoothing range 2 (3km)
+r1 = round(1500/gate); % index for smoothing range 1 (1500m)
+r2 = round(2500/gate); % index for smoothing range 2 (2500m)
 spatial_average1 = 150/gate; %150 meter smoothing range 1 
 spatial_average2 = 300/gate; %300 meter smoothing between range 1 and 2
 spatial_average3 = 600/gate; %600 meter smoothing above range 2
@@ -181,28 +181,37 @@ end
     h = msgbox('Online wavelength not stable during time period', 'Warning','warn');
  end
     % check for multiple wavelengths
-    edges_on=828.180:.00001:828.220;
-    [value,edges]=histcounts(round(lambda_all,4),edges_on); % bin rounded wavelengths
+    edges_on=828.180:.0001:828.220;
+    [value,edges]=histcounts(round(4*lambda_all,3)/4,edges_on); % bin rounded wavelengths
     lambda_N = edges(value>=10)  % wavelength values with occurance > 10
     %lambda_F = value(value~=0);  % frequency of occurance
-    lambda_all_N = round(lambda_all,4); 
+    lambda_all_N = round(4*lambda_all,3)/4; 
     figure(1234)
     plot(lambda_all_N)
     hold on
     plot(lambda_all)
     hold off
 
-    edges_off=828.280:.00001:828.320;
-    [value,edges]=histcounts(round(lambda_all_off,3),edges_off); % bin rounded wavelengths
+    edges_off=828.280:.00075:828.320;
+    [value,edges]=histcounts(round(2*lambda_all_off,3)/2,edges_off); % bin rounded wavelengths
     lambda_off_N = edges(value>=10)  % wavelength values with occurance > 10
+    % select the most common offline values associated with the online 
+      value_sort = [value; edges(1:end-1)]';
+      values_sorted = sortrows(value_sort, 1);
+      lambda_off_N = sort(values_sorted(end-size(lambda_N,2)+1:end))
     %lambda_off_F = value(value~=0);  % frequency of occurance
-    lambda_all_off_N=round(lambda_all_off,2);
+    lambda_all_off_N=round(2*lambda_all_off,3)/2;
     figure(5678)
     plot(lambda_all_off_N)
     hold on
     plot(lambda_all_off)
     hold off
 
+  if isempty(lambda_off_N) == 1
+      lambda_off_N = lambda_off 
+  end
+        
+        
  folder_date = textscan(folder_in(end-7:end-2), '%6f', 1); folder_date=folder_date{1}; % change to read ingore the NF and FF 
  folder_CH = textscan(folder_in(end-1:end), '%s'); folder_CH=folder_CH{1}; % change to read ingore the NF and FF 
  folder_CH=folder_CH{1:1};
@@ -630,6 +639,11 @@ end
     N(N>1E18) = nan; % use this to remove high water vapor errors
  end
   
+ % insert the surface water vapor number density 
+ %Surf_N = Surf_AH./1e6.*6.022E23./18.015;
+ %N(:,1) = Surf_N;
+ %N(:,blank_range/gate) = Surf_N;
+  
   N_avg = N;
   N_1_avg = nanmoving_average(N_avg,spatial_average1/2,2,flag.int);
   N_2_avg = nanmoving_average(N_avg,spatial_average2/2,2,flag.int);
@@ -936,7 +950,7 @@ xData =  linspace(fix(min(time_new)),  ceil(max(time_new)), 25);
   set(gca, 'XTick',  xData)
   colorbar('EastOutside');
   axis([fix(min(time_new)) fix(min(time_new))+1 0 12])
-  caxis([1 6]);
+  caxis([1 20]);
   datetick('x','HH','keeplimits', 'keepticks');
   colormap(C)
   %shading interp 

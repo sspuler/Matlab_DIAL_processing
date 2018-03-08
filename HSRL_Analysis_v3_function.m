@@ -700,11 +700,11 @@ xData =  linspace(fix(min(time_new)),  ceil(max(time_new)), 25);
  ax(2)=subplot(2,1,2);
  linkaxes([ax(1),ax(2)],'xy')
 
-receiver_scale_factor=0.479;
-profile_start = round(11.78/24.*size(backscatter_ratio,1));  
-profile_end = round(3.2/24.*size(backscatter_ratio,1));  
-profile_start2 = round(7/24.*size(backscatter_ratio,1));  
-profile_end2 = round(8/24.*size(backscatter_ratio,1));  
+receiver_scale_factor=0.95;
+profile_start = round(21.1/24.*size(backscatter_ratio,1));  
+profile_end = round(21.8/24.*size(backscatter_ratio,1));  
+profile_start2 = round(21.1/24.*size(backscatter_ratio,1));  
+profile_end2 = round(21.8/24.*size(backscatter_ratio,1));  
 figure(122)
 test1 = (Offline_Temp_Spatial_Avg(profile_start:profile_end,:));
 test2 = (Offline_Temp_Spatial_Avg(profile_start2:profile_end2,:));
