@@ -598,10 +598,10 @@ sigma_off_total=zeros(size(S_on_N,1),size(S_on_N,2));
 
 for l=1:length(lambda_N)
   for i = 1:size(Online_Temp_Spatial_Avg,1)
-    if single(lambda_all_N(i))==single(lambda_N(l))
+    if round(single(lambda_all_N(i)),3)==round(single(lambda_N(l)),3)
      sigma_on_total(i,:)= S_on_N(i,:,l); 
     end
-    if single(lambda_all_off_N(i))==single(lambda_off_N(l))
+    if round(single(lambda_all_off_N(i)),3)==round(single(lambda_off_N(l)),3)
      sigma_off_total(i,:)= S_off_N(i,:,l); 
     end   
   end
@@ -950,7 +950,7 @@ xData =  linspace(fix(min(time_new)),  ceil(max(time_new)), 25);
   set(gca, 'XTick',  xData)
   colorbar('EastOutside');
   axis([fix(min(time_new)) fix(min(time_new))+1 0 12])
-  caxis([1 20]);
+  caxis([1 6]);
   datetick('x','HH','keeplimits', 'keepticks');
   colormap(C)
   %shading interp 
@@ -975,7 +975,7 @@ xData =  linspace(fix(min(time_new)),  ceil(max(time_new)), 25);
   set(gca,'TickLength',[0.005; 0.0025]);
   colorbar('EastOutside');
   axis([fix(min(time_new)) fix(min(time_new))+1 0 6])
-  caxis([0 6]);
+  caxis([0 20]);
   datetick('x','HH','keeplimits', 'keepticks');
   colormap(C)
   %shading interp
