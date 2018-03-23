@@ -507,8 +507,11 @@ Hitran.delta = line(:,8);      % pressure shift from HiTRAN [cm^-1 atm^-1]
 % new code to handle multiple wavelength changes during a single day
 for l=1:length(lambda_N)
 
-Hitran.nu_on = 1/(lambda_N(l))*1e7;
-Hitran.nu_off = 1/(lambda_off_N(l))*1e7;
+%offset = 0.00017;  % This is the absolute accuracy (nm) of the Bristol 671A at 828 nm  
+offset = 0.00000; 
+
+Hitran.nu_on = 1/(lambda_N(l)+offset)*1e7;
+Hitran.nu_off = 1/(lambda_off_N(l)+offset)*1e7;
 %Hitran.nu_on = 1/(lambda)*1e7;
 %Hitran.nu_off = 1/(lambda_off)*1e7;
 
