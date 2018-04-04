@@ -8,8 +8,10 @@ days = 50; skip = 5; % days to plot and days to skip ticks for plots
 %days =50; skip = 5; % days to plot and days to skip ticks for plots ** 'skip' must evenly divide into 'days'
 date = '24 Apr 2017'; % Perdigao 
 days = 55; skip = 5;
-date = '24 May 2017'; % Perdigao 
-days = 10; skip = 2;
+date = '15 May 2017'; % Perdigao 
+days = 3; skip = 1;
+%date = '15 May 2017'; % Perdigao 
+%days = 3; skip = 2;
 
 %DIAL=2;
 %date = '28 Jul 2017'; % DLB-HSRL and WV-DIAL @ LAFE 
@@ -31,7 +33,7 @@ sonde = 0;
 %replot time vs range images at start of processing 0=off 1=on
 replot = 1;
 %save figures at end of processing 0=off 1=on
-save_figs = 1;
+save_figs = 0;
 %Wide field channel 0=off 1=on
 near_field = 0;  % now the HSRL channel
 % Wide field multiplier -- make it easier to compare Wide/Narrow RB profiles
@@ -50,7 +52,7 @@ else
   RB_scale = 1;
 end
   
-C = importdata('NCAR_C_Map.mat');
+C = importdata('/Users/spuler/Documents/GitHub/Matlab_DIAL_processing/NCAR_C_Map.mat');
 %C2 = importdata('NCAR_C2_Map.mat');
 %cd('/Users/spuler/Desktop/FRAPPE_PECAN') % point to the directory where data is stored 
 %cd('/Users/spuler/Desktop/WV_DIAL_data/') % point to the directory where data is stored 
@@ -185,7 +187,7 @@ if replot==1
  set(h, 'EdgeColor', 'none');
  colorbar('EastOutside');
  axis([fix(min(x)) ceil(max(x)) 0 6])
- caxis([0 6]);
+ caxis([0 12]);
  colormap(C)
  %shading interp
  % P_t = get(hh, 'Position');
@@ -350,7 +352,7 @@ if replot==1
    plot(duration, (t_off),'b','LineWidth',2,'DisplayName','T_{off}') % these plot diode Temps
    plot(duration, (t_on),'r','LineWidth',2, 'DisplayName','T_{on}')
 %   plot(duration, (t_hsrl),'g','LineWidth',2, 'DisplayName','T_{hsrl}')
-   axis([fix(min(duration)) ceil(max(duration)) 10 35])
+   axis([fix(min(duration)) ceil(max(duration)) -inf inf])
    YTick = [100 120 140 160 180];
    ylabel('seed Temp, C', 'Fontsize', font_size, 'Fontweight', 'b');  
    datetick('x','dd-mmm-yy','keeplimits', 'keepticks');
@@ -361,8 +363,8 @@ if replot==1
    hold(subplot2,'all');
 %   plot(duration, bench_T,'r', 'LineWidth',1, 'DisplayName','T bench')
    plot(duration, surf_T, 'b', 'LineWidth',1, 'DisplayName','Surface T')
-   axis([fix(min(duration)) ceil(max(duration)) -20 40])
-   YTick = [-25 0 25 50];
+   axis([fix(min(duration)) ceil(max(duration)) -inf inf]);   % -20 40])
+      YTick = [-25 0 25 50];
    ylabel('temperature, C', 'Fontsize', font_size, 'Fontweight', 'b'); 
    datetick('x','dd-mmm-yy','keeplimits', 'keepticks');
    set(gca,'Fontsize',font_size,'Fontweight','b');
@@ -377,8 +379,8 @@ if replot==1
    plot(duration, (p_off/1000),'b--','LineWidth', 1, 'DisplayName','P_{off}') % changed from 0.05 to 0.0425
    hold on
    plot(duration, p_on/1000,'r--', 'LineWidth',1, 'DisplayName','P_{on}')
-   plot(duration, p_hsrl/2500,'g--', 'LineWidth',1, 'DisplayName','P_{hsrl}')
-   axis([fix(min(duration)) ceil(max(duration)) 0 50])
+   %plot(duration, p_hsrl/2500,'g--', 'LineWidth',1, 'DisplayName','P_{hsrl}')
+   axis([fix(min(duration)) ceil(max(duration)) -inf inf])
    %ax(3).YTick = [20 22.5 25 27.5 30 32.5 35 37.5 40];
    set(ax(3),'Color','none')
    set(ax(3),'YAxisLocation','right')
@@ -393,7 +395,7 @@ if replot==1
    % plot Surface pressure right y-axis of the lower plot
    ax(4) = axes('Position',get(ax(2),'Position'));
    plot(duration, surf_P, 'b--','LineWidth', 1, 'DisplayName','Surf P') 
-   axis([fix(min(duration)) ceil(max(duration)) 0.8 1])
+   axis([fix(min(duration)) ceil(max(duration)) -inf inf])
    set(ax(4),'Color','none')
    set(ax(4),'YAxisLocation','right')
    set(ax(4),'XAxisLocation','bottom')
@@ -510,16 +512,18 @@ if save_figs==1
   
   %size = [scrsz(4)/2 scrsz(4)/10 scrsz(3)/1 scrsz(4)/2]; % use for standard plots
   size = [scrsz(4)/1 scrsz(4)/1 scrsz(3)/0.35 scrsz(4)/2.05]; % use for long plots 
-  size = [scrsz(4)/1 scrsz(4)/1 scrsz(3)/0.48 scrsz(4)/2]; % use for Perdigao BAMS plots 
+  %size = [scrsz(4)/1 scrsz(4)/1 scrsz(3)/0.47 scrsz(4)/2]; % use for Perdigao BAMS plots 
   %size = [scrsz(4)/1 scrsz(4)/1 scrsz(3)/2 scrsz(4)/2]; % use for day plots 
   %size = [scrsz(4)/1 scrsz(4)/1 scrsz(3)/1 scrsz(4)/2.2]; % use for AMT sized 3-day plots (with large font)
   
   FigH = figure(1);
+  %set(gca,'Fontsize',16.5,'Fontweight','b');
   set(FigH, 'PaperUnits', 'points', 'PaperPosition', size);
   name=strcat(date, 'FF_H2O_multi'); 
   print(FigH, name, '-dpng', '-r300') % set the resolution as 300 dpi
  
   FigH = figure(2);
+ % set(gca,'Fontsize',16.5,'Fontweight','b');
   set(FigH, 'PaperUnits', 'points', 'PaperPosition', size);
   name=strcat(date, 'FF_RB_multi'); 
   print(FigH, name, '-dpng', '-r300') % set the resolution as 300 dpiFigH = figure(1);

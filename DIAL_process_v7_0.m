@@ -6,8 +6,8 @@ write_data_folder = uipickfiles('num',1,'out', 'char', 'prompt', ...
 %write_data_folder = '/Volumes/documents/WV_DIAL_data/processed_data';
 node = 'DIAL1';
     catalog = '/pub/incoming/catalog/perdigao';
-node = 'DIAL2'; %DIAL #2 HSRL data on NF channel, WV on FF channel
-    catalog = '/pub/incoming/catalog/operations';
+%node = 'DIAL2'; %DIAL #2 HSRL data on NF channel, WV on FF channel
+%    catalog = '/pub/incoming/catalog/operations';
 
 flag.save_quicklook = 1;  % save quicklook to local directory
 flag.save_data = 1;  % save files in matlab format

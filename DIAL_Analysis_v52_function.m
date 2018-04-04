@@ -978,7 +978,7 @@ xData =  linspace(fix(min(time_new)),  ceil(max(time_new)), 25);
   set(gca,'TickLength',[0.005; 0.0025]);
   colorbar('EastOutside');
   axis([fix(min(time_new)) fix(min(time_new))+1 0 6])
-  caxis([0 20]);
+  caxis([0 10]);
   datetick('x','HH','keeplimits', 'keepticks');
   colormap(C)
   %shading interp
