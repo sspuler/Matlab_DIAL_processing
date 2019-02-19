@@ -15,6 +15,6 @@ j=1;
 for j = 1:size(sondefilename,2)
     cd('/Users/spuler/Documents/GitHub/Matlab_DIAL_processing/')
     [N_H2O, sonde_top, sonde_range, t, date, T_sonde, P_sonde, sonde_stop, Wind_speed] = Sonde_get_v3(sondedir, sondefilename{j}, average); 
-    Sonde_DIAL_comparison_funct_v4(N_H2O, sonde_top, sonde_range, t, date, T_sonde, P_sonde, sonde_stop, shift, error_threshold, Wind_speed, save_figs)
+    Sonde_DIAL_comparison_funct_v5(N_H2O, sonde_top, sonde_range, t, date, T_sonde, P_sonde, sonde_stop, shift, error_threshold, Wind_speed, save_figs)
     %Sonde_DIAL_comparison_funct_Python(N_H2O, sonde_top, sonde_range, t, date, T_sonde, P_sonde, sonde_stop, shift, error_threshold, Wind_speed, save_figs)
 end

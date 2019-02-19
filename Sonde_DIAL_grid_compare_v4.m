@@ -3,7 +3,7 @@ close all
 scrsz = get(0,'ScreenSize');
 sonde_select = 0;
 sonde_smooth = 150; % range smooth the sondes to match DIAL
-save_figs = 1; 
+save_figs = 0; 
 gate = 75;
 cut = 3; %number of std to consider as outliner
 
